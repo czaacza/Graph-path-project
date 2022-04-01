@@ -29,17 +29,29 @@ static void printHelp()
   fprintf(stdout, "%s", usage);
 }
 
+// static int checkArguments(g, c, r, m, x, z, f, p, s, e, i, o)
+// {
+//   if (g == 1)
+//   {
+//     if (c < 0)
+//     {
+//       return
+//     }
+//   }
+// }
+
 int main(int argc, char **argv)
 {
   int numOfArguments = argc;
   int opt;
 
-  int generateMode = 0;
+  int genMode = 0;
   int numOfColums = 100;
   int numOfRows = 100;
   double minWeight = 1;
   double maxWeight = 100;
   int chance = 10;
+  char *genGraphFileName;
 
   int pathMode = 0;
   int startVertex;
@@ -52,39 +64,90 @@ int main(int argc, char **argv)
     switch (opt)
     {
     case 'g':
-      generateMode = 1;
+      genMode = 1;
       break;
     case 'c':
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
       numOfColums = atoi(optarg);
+
       break;
     case 'r':
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
       numOfRows = atoi(optarg);
       break;
     case 'm':
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
       minWeight = atof(optarg);
       break;
     case 'x':
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
       maxWeight = atof(optarg);
       break;
     case 'z':
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
       chance = atoi(optarg);
       break;
     case 'f':
-      inFileName = optarg;
+      if (genMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on gen mode.");
+        return 6;
+      }
+      genGraphFileName = optarg;
       break;
     case 'p':
       pathMode = 1;
       break;
     case 's':
+      if (pathMode == 0)
+      {
+        fprintf(stderr, "%s: %s\n", argv[0], "You selected path mode argument without turning on the path mode.");
+        return 6;
+      }
       startVertex = atoi(optarg);
       break;
     case 'e':
+      if (pathMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on the path mode.");
+        return 6;
+      }
       endVertex = atoi(optarg);
       break;
     case 'i':
+      if (pathMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on the path mode.");
+        return 6;
+      }
       inFileName = inFileName;
       break;
     case 'o':
+      if (pathMode == 0)
+      {
+        fprintf(stderr, "%s\n", "You selected path mode argument without turning on the path mode.");
+        return 6;
+      }
       outFileName = optarg;
       break;
     case 'h':
