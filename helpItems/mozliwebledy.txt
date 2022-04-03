@@ -1,0 +1,6 @@
+błędy możliwe do wystąpienia:
+- niepodany zadny tryb
+- podany argument, niepodany tryb
+- wartosci argumentow niepoprawne
+- podany tryb PATH, niepodany startowy/koncowy wierzcholek
+- podany tryb PATH, niepodany plik input
