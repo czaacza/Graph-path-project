@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct edges {	// lista krawędzi 
-	int start;	// wierzchołek początkowy
-	int end;	// w. końcowy
-	double  value;	// waga
+typedef struct edges
+{				  // lista krawędzi
+	int start;	  // wierzchołek początkowy
+	int end;	  // w. końcowy
+	double value; // waga
 	struct edges *next;
-} *ptr;
+} * ptr;
 
-ptr add_edge(ptr graph, int start, int end, double value) {
+ptr add_edge(ptr graph, int start, int end, double value)
+{
 	// dodaje krawędź na początek linked listy
 	ptr nw = malloc(sizeof nw);
 
@@ -18,7 +20,6 @@ ptr add_edge(ptr graph, int start, int end, double value) {
 	nw->value = value;
 
 	return nw;
-
 }
 
 int main(int argc, char **argv)
@@ -31,12 +32,14 @@ int main(int argc, char **argv)
 
 	ptr graph = NULL;
 
-	for (i = 0; i < c * r - 1; i++) {
+	for (i = 0; i < c * r - 1; i++)
+	{
 		if (i >= (c - 1) * r)
 		{ // sprawdza czy wierzchołek jest w ostatnim wierszu
 			graph = add_edge(graph, i, i + 1, 5);
-			graph = add_edge(graph, i + 1, i, 5);	// zamiana indeksów, żeby krawędź była w obie strony
-		} else if (i % c == c - 1)
+			graph = add_edge(graph, i + 1, i, 5); // zamiana indeksów, żeby krawędź była w obie strony
+		}
+		else if (i % c == c - 1)
 		{ // sprawdza czy wierzchołek jest  w ostatniej kolumnie
 			graph = add_edge(graph, i, i + c, 5);
 			graph = add_edge(graph, i + c, i, 5);
@@ -52,11 +55,14 @@ int main(int argc, char **argv)
 
 	// wypisywanie do pliku
 	fprintf(out, "%d %d", r, c);
-	for (i = 0; i < c * r; i++) {	// dla każdego wierzchołka
+	for (i = 0; i < c * r; i++)
+	{ // dla każdego wierzchołka
 		fprintf(out, "\n");
 		ptr tmp = graph;
-		while(tmp != NULL) {	// przechodzi po liście krawędzi
-			if(tmp->start == i) {	// i szuka krawędzi, których początkiem jest nasz wierzchołek
+		while (tmp != NULL)
+		{ // przechodzi po liście krawędzi
+			if (tmp->start == i)
+			{ // i szuka krawędzi, których początkiem jest nasz wierzchołek
 				fprintf(out, "%d :waga ", tmp->end);
 			}
 			tmp = tmp->next;
@@ -65,7 +71,6 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-
 
 /*
 // wersja z tablicą
