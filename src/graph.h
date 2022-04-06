@@ -5,9 +5,12 @@
 
 typedef struct
 {
-	double **vertices;
-	int numOfColumns;
+	double **values;
 	int numOfRows;
+	int numOfColumns;
 } * graph_t;
+
+graph_t createGraph();
+int loadGraph(graph_t graph, char *fileName);
 
 #endif
