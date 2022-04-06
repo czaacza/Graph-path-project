@@ -79,23 +79,23 @@ int loadGraph(graph_t graph, char *fileName)
             ungetc(c, inFile);
             int checkedVertex; // pobrany numer wierzcholka do ktorego mamy wage
             double weightValue;
-            fscanf(inFile, "%d %lf", &(checkedVertex), &(weightValue));
+            fscanf(inFile, "%d :%lf", &(checkedVertex), &(weightValue));
 
             printf(" vertexNum = %d checkedVertex = %d weightValue = %g ", vertexNum, checkedVertex, weightValue);
 
-            if (checkedVertex = vertexNum - graph->numOfColumns)
+            if (checkedVertex == (vertexNum - graph->numOfColumns))
             {
                 graph->values[vertexNum][0] = weightValue;
             }
-            else if (checkedVertex = vertexNum + 1)
+            else if (checkedVertex == (vertexNum + 1))
             {
                 graph->values[vertexNum][1] = weightValue;
             }
-            else if (checkedVertex = vertexNum + graph->numOfColumns)
+            else if (checkedVertex == (vertexNum + graph->numOfColumns))
             {
                 graph->values[vertexNum][2] = weightValue;
             }
-            else if (checkedVertex = vertexNum - 1)
+            else if (checkedVertex == (vertexNum - 1))
             {
                 graph->values[vertexNum][3] = weightValue;
             }

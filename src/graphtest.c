@@ -17,9 +17,10 @@ int main()
 
     for (int i = 0; i < graph->numOfRows * graph->numOfColumns; i++)
     {
+        printf("W.%d ", i);
         for (int j = 0; j < 4; j++)
         {
-            printf("%g\t", graph->values[i][j]);
+            printf("values[%d] = %g\t", j, graph->values[i][j]);
         }
         printf("\n");
     }
