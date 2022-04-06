@@ -90,6 +90,7 @@ int loadGraph(graph_t graph, char *inFileName)
             {
                 graph->values[vertexNum][3] = weightValue;
             }
+
             else
             {
                 fprintf(stderr, "ERROR: Couldn't load the graph. %s has wrong file format.\n", inFileName);
@@ -117,14 +118,21 @@ int saveGraph(graph_t graph, char *outFileName)
         {
             if (graph->values[vertice][i])
             {
-                if (i == 0)
+                switch (i)
+                {
+                case 0:
                     fprintf(outFile, "%d :%g ", vertice - graph->numOfColumns, graph->values[vertice][i]);
-                if (i == 1)
+                    break;
+                case 1:
                     fprintf(outFile, "%d :%g ", vertice + graph->numOfColumns, graph->values[vertice][i]);
-                if (i == 2)
+                    break;
+                case 2:
                     fprintf(outFile, "%d :%g ", vertice + 1, graph->values[vertice][i]);
-                if (i == 3)
+                    break;
+                case 3:
                     fprintf(outFile, "%d :%g ", vertice - 1, graph->values[vertice][i]);
+                    break;
+                }
             }
         }
         fprintf(outFile, "\n");
