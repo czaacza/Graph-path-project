@@ -31,20 +31,20 @@ int main(int argc, char **argv)
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-			{"gen", no_argument, 0, 0},			// 0
-			{"nc", required_argument, 0, 0},	// 1
-			{"nr", required_argument, 0, 0},	// 2
-			{"minw", required_argument, 0, 0},	// 3
-			{"maxw", required_argument, 0, 0},	// 4
-			{"s", required_argument, 0, 0},		// 5
-			{"file", required_argument, 0, 0},	// 6
-			{"search", no_argument, 0, 0},		// 7
-			{"start", required_argument, 0, 0}, // 8
-			{"end", required_argument, 0, 0},	// 9
-			{"in", required_argument, 0, 0},	// 10
-			{"out", required_argument, 0, 0},	// 11
-			{"h", required_argument, 0, 0},		// 12
-			{0, 0, 0, 0}};
+				{"gen", no_argument, 0, 0},					// 0
+				{"nc", required_argument, 0, 0},		// 1
+				{"nr", required_argument, 0, 0},		// 2
+				{"minw", required_argument, 0, 0},	// 3
+				{"maxw", required_argument, 0, 0},	// 4
+				{"s", required_argument, 0, 0},			// 5
+				{"file", required_argument, 0, 0},	// 6
+				{"search", no_argument, 0, 0},			// 7
+				{"start", required_argument, 0, 0}, // 8
+				{"end", required_argument, 0, 0},		// 9
+				{"in", required_argument, 0, 0},		// 10
+				{"out", required_argument, 0, 0},		// 11
+				{"h", required_argument, 0, 0},			// 12
+				{0, 0, 0, 0}};
 
 		opt = getOptLongOnly(argc, argv, "", longOptions, &optionIndex);
 
@@ -120,8 +120,8 @@ int main(int argc, char **argv)
 	checkArgumentValues(numOfColumns, numOfRows, minWeight, maxWeight, chance);
 	// test - print all arguments values
 	printf(
-		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
-		genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
+			" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
+			genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
 
 	if (genMode == 1)
 	{
@@ -130,8 +130,8 @@ int main(int argc, char **argv)
 
 		FILE *genGraphFile = fopen(genGraphFileName, "w");
 		fprintf(genGraphFile,
-				" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
-				genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
+						" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
+						genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
 	}
 
 	if (searchMode == 1)
@@ -149,25 +149,25 @@ int main(int argc, char **argv)
 static void printHelp()
 {
 	char *usage =
-		"Usage: The program can be called using two modes: \n"
-		"-------------------------------------------------------------------------------\n"
-		"-gen : Generator mode, program will generate the graph based on following flags: \n"
-		"------------------------------------------------------------------------------- \n"
-		"-nc cNum: \t cNum - Integer number of columns. Must be greater than 0 \n"
-		"-nr rNum: \t rNum - Integer number of rows. Must be greater than 0 \n"
-		"-minw minW: \t minW - Decimal number of minimal weight of the edge. Must be greater than 0\n"
-		"-maxw maxW: \t maxW - Decimal number of maximal weight of the edge. Must be greater than k \n"
-		"-s chance: \t chance - Integer number represanting % chance of NO existence of an edge between two vertices. Must be a value between 0 and 100\n"
-		"-file file: \t file - Name of the file the graph will be generated to. \n\n"
-		"-------------------------------------------------------------------------------\n"
-		"-search : Search mode, program will find the shortest path between two given vertices: \n"
-		"------------------------------------------------------------------------------- \n"
-		"-start startV: \t startV - Integer number of starting vertex. Must fit in the number of graph's vertices.\n"
-		"-end endV: \t endV - Integer number of ending vertex. Must fit in the number of graph's vertices.\n"
-		"-in inFile: \t inFile - Name of the file the graph will be collected from\n"
-		"-out outFile: \t outFile - Name of the file the graph will be inserted into\n\n"
-		"-------------------------------------------------------------------------------\n"
-		"-h - Prints out help menu.\n";
+			"Usage: The program can be called using two modes: \n"
+			"-------------------------------------------------------------------------------\n"
+			"-gen : Generator mode, program will generate the graph based on following flags: \n"
+			"------------------------------------------------------------------------------- \n"
+			"-nc cNum: \t cNum - Integer number of columns. Must be greater than 0 \n"
+			"-nr rNum: \t rNum - Integer number of rows. Must be greater than 0 \n"
+			"-minw minW: \t minW - Decimal number of minimal weight of the edge. Must be greater than 0\n"
+			"-maxw maxW: \t maxW - Decimal number of maximal weight of the edge. Must be greater than k \n"
+			"-s chance: \t chance - Integer number represanting % chance of NO existence of an edge between two vertices. Must be a value between 0 and 100\n"
+			"-file file: \t file - Name of the file the graph will be generated to. \n\n"
+			"-------------------------------------------------------------------------------\n"
+			"-search : Search mode, program will find the shortest path between two given vertices: \n"
+			"------------------------------------------------------------------------------- \n"
+			"-start startV: \t startV - Integer number of starting vertex. Must fit in the number of graph's vertices.\n"
+			"-end endV: \t endV - Integer number of ending vertex. Must fit in the number of graph's vertices.\n"
+			"-in inFile: \t inFile - Name of the file the graph will be collected from\n"
+			"-out outFile: \t outFile - Name of the file the graph will be inserted into\n\n"
+			"-------------------------------------------------------------------------------\n"
+			"-h - Prints out help menu.\n";
 
 	fprintf(stdout, "%s", usage);
 }

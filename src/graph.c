@@ -3,13 +3,6 @@
 #include <ctype.h>
 #include "graph.h"
 
-// typedef struct
-// {
-// 	double **values;
-// 	int numOfColumns;
-// 	int numOfRows;
-// } * graph_t;
-
 graph_t createGraph()
 {
     graph_t newGraph = malloc(sizeof *newGraph);
@@ -39,34 +32,31 @@ static void initGraphValues(graph_t graph, int numOfRows, int numOfColumns)
     }
 }
 
-int loadGraph(graph_t graph, char *fileName)
+int loadGraph(graph_t graph, char *inFileName)
 {
-    FILE *inFile = fopen(fileName, "r");
+    FILE *inFile = fopen(inFileName, "r");
 
     if (inFile == NULL)
     {
+        fprintf(stderr, "ERROR: Couldn't find input file named '%s'\n", inFileName);
         return 3;
     }
 
     if (fscanf(inFile, "%d %d", &(graph->numOfRows), &(graph->numOfColumns)) != 2)
     {
-        fprintf(stderr, "Reading numOfRows and numOfColumns from file %s failed.\n", fileName);
+        fprintf(stderr, "Reading numOfRows and numOfColumns from file %s failed.\n", inFileName);
         return 3;
     }
 
     initGraphValues(graph, graph->numOfRows, graph->numOfColumns);
 
-    int lineNum = 1;
-    int vertexNum = lineNum - 2;
-    int a;
+    int vertexNum = -1;
     int c;
 
     while ((c = fgetc(inFile)) != EOF)
     {
         if (c == '\n')
         {
-            printf("\n");
-            lineNum++;
             vertexNum++;
         }
 
@@ -77,45 +67,71 @@ int loadGraph(graph_t graph, char *fileName)
         if (isdigit(c))
         {
             ungetc(c, inFile);
-            int checkedVertex; // pobrany numer wierzcholka do ktorego mamy wage
+            int checkedVertex;
             double weightValue;
             fscanf(inFile, "%d :%lf", &(checkedVertex), &(weightValue));
-
-            printf(" vertexNum = %d checkedVertex = %d weightValue = %g ", vertexNum, checkedVertex, weightValue);
 
             if (checkedVertex == (vertexNum - graph->numOfColumns))
             {
                 graph->values[vertexNum][0] = weightValue;
             }
-            else if (checkedVertex == (vertexNum + 1))
+
+            else if (checkedVertex == (vertexNum + graph->numOfColumns))
             {
                 graph->values[vertexNum][1] = weightValue;
             }
-            else if (checkedVertex == (vertexNum + graph->numOfColumns))
+
+            else if (checkedVertex == (vertexNum + 1))
             {
                 graph->values[vertexNum][2] = weightValue;
             }
+
             else if (checkedVertex == (vertexNum - 1))
             {
                 graph->values[vertexNum][3] = weightValue;
             }
             else
             {
-                fprintf(stderr, "ERROR: Graph uncessfully loaded. %s has wrong file format.", fileName);
+                fprintf(stderr, "ERROR: Couldn't load the graph. %s has wrong file format.\n", inFileName);
+                exit(3);
             }
 
             continue;
         }
     }
-    printf(" Line num: %d\n", lineNum);
-    printf(" NumOfRows = %d\n NumOfColumns = %d\n", graph->numOfRows, graph->numOfColumns);
+}
+
+int saveGraph(graph_t graph, char *outFileName)
+{
+    FILE *outFile = fopen(outFileName, "w");
+    if (outFile == NULL)
+    {
+        fprintf(stderr, "ERROR: Couldn't open file named '%s'\n", outFileName);
+        return 4;
+    }
+
+    fprintf(outFile, "%d %d\n", graph->numOfRows, graph->numOfColumns);
+    for (int vertice = 0; vertice < graph->numOfColumns * graph->numOfRows; vertice++)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (graph->values[vertice][i])
+            {
+                if (i == 0)
+                    fprintf(outFile, "%d :%g ", vertice - graph->numOfColumns, graph->values[vertice][i]);
+                if (i == 1)
+                    fprintf(outFile, "%d :%g ", vertice + graph->numOfColumns, graph->values[vertice][i]);
+                if (i == 2)
+                    fprintf(outFile, "%d :%g ", vertice + 1, graph->values[vertice][i]);
+                if (i == 3)
+                    fprintf(outFile, "%d :%g ", vertice - 1, graph->values[vertice][i]);
+            }
+        }
+        fprintf(outFile, "\n");
+    }
 }
 
 graph_t generateGraph()
-{
-}
-
-int saveGraph()
 {
 }
 

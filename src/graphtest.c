@@ -6,9 +6,9 @@ int main()
 {
 
     graph_t graph = createGraph();
-    loadGraph(graph, "dane");
-
+    loadGraph(graph, "data/dane");
     printGraph(graph);
+    saveGraph(graph, "data/graf_dane");
 
     return 0;
 }

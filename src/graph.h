@@ -12,6 +12,7 @@ typedef struct
 
 graph_t createGraph();
 int loadGraph(graph_t graph, char *fileName);
+int saveGraph(graph_t graph, char *outFileName);
 void printGraph(graph_t graph);
 
 #endif
