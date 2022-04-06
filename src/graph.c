@@ -118,3 +118,17 @@ graph_t generateGraph()
 int saveGraph()
 {
 }
+
+void printGraph(graph_t graph)
+{
+    for (int i = 0; i < graph->numOfRows * graph->numOfColumns; i++)
+    {
+        printf("W.%d ", i);
+        printf("values = [ ");
+        for (int j = 0; j < 4; j++)
+        {
+            printf("%g ", graph->values[i][j]);
+        }
+        printf("]\n");
+    }
+}
