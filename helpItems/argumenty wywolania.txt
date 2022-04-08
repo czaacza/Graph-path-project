@@ -1,0 +1,18 @@
+jesli wlaczymy -g:
+musi byc:
+-c [100] (0; )
+-r [100] (0; )
+-m [1] (0 ; <maxw)
+-x [100] (>minw ; )
+-z [10] <0; 100>
+-f [graf_dane]
+
+jesli wlaczymy -search:
+musi byc:
+-s !wymagany!
+-e !wymagany!
+-i !wymagany! [CHYBA ŻE URUCHAMIAMY RAZEM Z GEN]
+-o [stdout]
+
+dodatkowo:
+-h
