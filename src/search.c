@@ -93,21 +93,21 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
       int *tempArray = malloc(1 * sizeof(int));
       int numOfElements = 0;
 
-      // while (iterator != startVertex)
-      // {
-      //   iterator = previous[iterator];
-      //   endVertexPath[0] = endVertex;
-      //   numOfElements++;
-      //   endVertexPath[numOfElements] = iterator;
-      //   tempArray = realloc(endVertexPath, numOfElements * sizeof(int));
-      //   if (tempArray == NULL)
-      //   {
-      //     fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
-      //     exit(1);
-      //   }
-      //   endVertexPath = tempArray;
-      // }
-      // reverse(endVertexPath, numOfElements);
+      while (iterator != startVertex)
+      {
+        iterator = previous[iterator];
+        endVertexPath[0] = endVertex;
+        numOfElements++;
+        endVertexPath[numOfElements] = iterator;
+        tempArray = realloc(endVertexPath, numOfElements * sizeof(int));
+        if (tempArray == NULL)
+        {
+          fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
+          exit(1);
+        }
+        endVertexPath = tempArray;
+      }
+      reverse(endVertexPath, numOfElements);
 
       returnValues->length = pathLength[endVertex];
       returnValues->path = endVertexPath;
