@@ -156,3 +156,9 @@ void printGraph(graph_t graph)
         printf("]\n");
     }
 }
+
+void freeGraph(graph_t graph)
+{
+    free(graph->values);
+    free(graph);
+}

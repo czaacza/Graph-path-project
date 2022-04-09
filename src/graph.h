@@ -15,5 +15,6 @@ int loadGraph(graph_t graph, char *fileName);
 int saveGraph(graph_t graph, char *outFileName);
 void printGraph(graph_t graph);
 void initGraphValues(graph_t graph, int numOfRows, int numOfColumns);
+void freeGraph(graph_t graph);
 
 #endif
