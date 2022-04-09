@@ -15,7 +15,7 @@ graph_t createGraph()
     return newGraph;
 }
 
-static void initGraphValues(graph_t graph, int numOfRows, int numOfColumns)
+void initGraphValues(graph_t graph, int numOfRows, int numOfColumns)
 {
 
     graph->values = malloc(sizeof(double *) * numOfRows * numOfColumns);

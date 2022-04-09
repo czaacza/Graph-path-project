@@ -4,7 +4,7 @@
 #include "generate.h"
 #include "graph.h"
 
-double randomInRange(double min, double max)
+static double randomInRange(double min, double max)
 {
 	return min + (rand() / RAND_MAX / (max - min));
 }
