@@ -8,7 +8,7 @@ typedef struct returnValues
 } returnValues_t;
 
 int dijkstra(graph_t graph, int startVertex, int endVertex);
-int addNeighbours(graph_t graph, int *neighboursList, int vertex);
+void addNeighbours(graph_t graph, int *neighboursList, int vertex);
 int isElementPresent(int element, int *array, int arraySize);
 int minPathVertex(int *visited, int visitedSize, int *neighboursList, double *pathLength);
 int areAllVerticesVisited(int *visited, int visitedSize, double *pathLength);

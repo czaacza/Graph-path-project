@@ -17,10 +17,6 @@ int dijkstra(graph_t graph, int startVertex, int endVertex)
 
   // Initialize list of vertex neighbours
   int *neighboursList = malloc(sizeof *neighboursList * 4);
-  for (int i = 0; i < 4; i++)
-  {
-    neighboursList[i] = -1;
-  }
 
   int currentVertex = startVertex;
   int currentWeight;
@@ -38,8 +34,18 @@ int dijkstra(graph_t graph, int startVertex, int endVertex)
 
   while (1)
   {
+    addNeighbours(graph, neighboursList, currentVertex);
+    printf("Neighbours of %d: ", currentVertex);
+    for (int i = 0; i < 4; i++)
+    {
+      printf("%d ", neighboursList[i]);
+      printf("pathLength = %g\n", pathLength[neighboursList[i]]);
+    }
+    printf("\n");
 
     nextVertex = minPathVertex(visited, numOfRows * numOfColumns, neighboursList, pathLength);
+    printf("Next vertex: %d\n", nextVertex);
+
     visited[nextVertex] = 1;
 
     if (nextVertex == (currentVertex - numOfColumns))
@@ -71,13 +77,16 @@ int dijkstra(graph_t graph, int startVertex, int endVertex)
     {
       break;
     }
+    break;
   }
 }
 
-int addNeighbours(graph_t graph, int *neighboursList, int vertex)
+void addNeighbours(graph_t graph, int *neighboursList, int vertex)
 {
+
   for (int i = 0; i < 4; i++)
   {
+    neighboursList[i] = -1;
     if (graph->values[vertex][i] > 0)
     {
       switch (i)
@@ -114,11 +123,11 @@ int isElementPresent(int element, int *array, int arraySize)
 int minPathVertex(int *visited, int visitedSize, int *neighboursList, double *pathLength)
 {
   int minPath = INF;
-  int minVertex = neighboursList[0];
+  int minVertex = -1;
 
   for (int i = 0; i < 4; i++)
   {
-    if (!isElementPresent(neighboursList[i], visited, visitedSize) && pathLength[neighboursList[i]] < minPath)
+    if (neighboursList[i] != -1 && visited[neighboursList[i]] == 0 && pathLength[neighboursList[i]] <= minPath)
     {
       minPath = pathLength[neighboursList[i]];
       minVertex = neighboursList[i];
@@ -155,8 +164,8 @@ int areAllVerticesVisited(int *visited, int visitedSize, double *pathLength)
 int main()
 {
   graph_t graph = createGraph();
-  loadGraph(graph, "data/dane.1");
+  loadGraph(graph, "data/danezfilmu");
 
-  dijkstra(graph, 0, 12);
+  dijkstra(graph, 4, 12);
   return 0;
 }
