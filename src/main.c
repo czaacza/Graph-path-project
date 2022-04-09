@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 			{"h", required_argument, 0, 0},		// 12
 			{0, 0, 0, 0}};
 
-		opt = getOptLongOnly(argc, argv, "", longOptions, &optionIndex);
+		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
 		if (opt == -1)
 		{
@@ -131,14 +131,17 @@ int main(int argc, char **argv)
 	{
 		// generate mode functionalities:
 		// generate graph, write graph to file
-
+		graph->numOfColumns = numOfColumns;
+		graph->numOfRows = numOfRows;
 		initGraphValues(graph, numOfRows, numOfColumns);
 		genGraph(graph, chance, maxWeight, minWeight);
-
+		/*
 		FILE *genGraphFile = fopen(genGraphFileName, "w");
 		fprintf(genGraphFile,
 				" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
 				genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
+		*/
+		saveGraph(graph, genGraphFileName);
 	}
 
 	if (searchMode == 1)
