@@ -8,7 +8,7 @@
 
 static void printHelp();
 static void checkArguments(int optionIndex, int genMode, int searchMode);
-static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, int chance);
+static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, double chance);
 
 int main(int argc, char **argv)
 {
@@ -19,14 +19,14 @@ int main(int argc, char **argv)
 	int numOfRows = 100;
 	double minWeight = 1;
 	double maxWeight = 100;
-	int chance = 10;
+	double chance = 10;
 	char *genGraphFileName = "graf_dane";
 
 	int searchMode = 0;
 	int startVertex;
 	int endVertex;
-	char *inFileName;
-	char *outFileName;
+	char *inFileName = "graf_dane";
+	char *outFileName = NULL;
 
 	while (1)
 	{
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 				maxWeight = atof(optarg);
 				break;
 			case 5:
-				chance = atoi(optarg);
+				chance = atof(optarg);
 				break;
 			case 6:
 				genGraphFileName = optarg;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 				endVertex = atoi(optarg);
 				break;
 			case 10:
-				inFileName = inFileName;
+				inFileName = optarg;
 				break;
 			case 11:
 				outFileName = optarg;
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 	checkArgumentValues(numOfColumns, numOfRows, minWeight, maxWeight, chance);
 	// test - print all arguments values
 	printf(
-		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n",
+		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %g\n genGraphFileName = %s\n searchMode = %d\n",
 		genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode);
 
 	graph_t graph = createGraph();
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 		graph->numOfColumns = numOfColumns;
 		graph->numOfRows = numOfRows;
 		initGraphValues(graph, numOfRows, numOfColumns);
-		genGraph(graph, chance, maxWeight, minWeight);
+		genGraph(graph, chance, minWeight, maxWeight);
 		/*
 		FILE *genGraphFile = fopen(genGraphFileName, "w");
 		fprintf(genGraphFile,
@@ -151,6 +151,34 @@ int main(int argc, char **argv)
 		// BFS implementation - check if graph is connected
 		// Dijkstra algorithm implementation - check the shortest path between two vertices
 		// print out [is graph connected], [shortest path], [value of shortest path]
+		if (outFileName == NULL)
+		{
+			if (bfs(graph) == 1)
+			{
+				printf("Graf jest spójny\n");
+			}
+			else
+			{
+				printf("Graf nie jest spójny\n");
+			}
+		}
+		else
+		{
+			FILE *out = fopen(outFileName, "w");
+			if (out == NULL)
+			{
+				fprintf(stderr, "ERROR: Couldn't open file named '%s'\n", outFileName);
+				return 4;
+			}
+			if (bfs(graph) == 1)
+			{
+				fprintf(out, "Graf jest spójny\n");
+			}
+			else
+			{
+				fprintf(out, "Graf nie jest spójny\n");
+			}
+		}
 	}
 
 	exit(EXIT_SUCCESS);
@@ -196,7 +224,7 @@ static void checkArguments(int optionIndex, int genMode, int searchMode)
 	}
 }
 
-static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, int chance)
+static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, double chance)
 {
 	if (numOfColumns <= 0)
 	{

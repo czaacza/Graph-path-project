@@ -23,10 +23,11 @@ int isEmpty(queue_t queue)
 int checkEdge(int start, int end, graph_t graph)
 {
 	int numOfColumns = graph->numOfColumns;
-	if ((end == start - 1 && graph->vertices[start][0] != -1) ||
-		(end == start + 1 && graph->vertices[start][1] != -1) ||
-		(end == start + numOfColumns && graph->vertices[start][2] != -1) ||
-		(end == start - numOfColumns && graph->vertices[start][3] != -1))
+	double **values = graph->values;
+	if ((end == start - 1 && values[start][0] != 0) ||
+		(end == start + 1 && values[start][1] != 0) ||
+		(end == start + numOfColumns && values[start][2] != 0) ||
+		(end == start - numOfColumns && values[start][3] != 0))
 		return 1;
 	return 0;
 }
