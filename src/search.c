@@ -10,7 +10,7 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
   returnValues_t returnValues = malloc(sizeof *returnValues);
   returnValues->length = -1;
   returnValues->path = NULL;
-  returnValues->numOfVisitedVertices = 0;
+  returnValues->numOfVisitedVertices = -1;
 
   int numOfRows = graph->numOfRows;
   int numOfColumns = graph->numOfColumns;
@@ -22,7 +22,7 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
 
   int *neighboursList = malloc(sizeof *neighboursList * 4);
 
-  int currentVertex = startVertex;
+  int currentVertex;
   double currentWeight;
   int nextVertex;
 
@@ -34,11 +34,12 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
   }
 
   pathLength[startVertex] = 0;
-  visited[startVertex] = 1;
 
-  int iter = 0;
   while (1)
   {
+    currentVertex = minPathVertex(visited, numOfRows * numOfColumns, pathLength);
+    visited[currentVertex] = 1;
+
     addNeighbours(graph, neighboursList, currentVertex);
 
     for (int v = 0; v < 4; v++)
@@ -48,7 +49,6 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
         nextVertex = neighboursList[v];
         printf("Current vertex: %d\n", currentVertex);
         printf("Next vertex: %d\n", nextVertex);
-
         currentWeight = findWeight(currentVertex, nextVertex, weight, numOfColumns);
         printf("CurrentWeight: %g\n", currentWeight);
 
@@ -60,12 +60,9 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
 
         printf("pathLength[nextVertex] = %g\n", pathLength[nextVertex]);
         printf("previous[nextVertex] = %d\n", previous[nextVertex]);
-
         printf("\n");
       }
     }
-    currentVertex = minPathVertex(visited, numOfRows * numOfColumns, pathLength);
-    visited[currentVertex] = 1;
 
     if (areAllVerticesVisited(visited, numOfRows * numOfColumns, pathLength) || currentVertex == endVertex)
     {
@@ -85,26 +82,32 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
       //   printf("%d ", previous[i]);
       // }
 
+      if (pathLength[endVertex] == INF)
+      {
+        printf("There is no connection between vertices %d and %d.", startVertex, endVertex);
+        break;
+      }
+
       int iterator = endVertex;
       int *endVertexPath = malloc(1 * sizeof(int));
       int *tempArray = malloc(1 * sizeof(int));
       int numOfElements = 0;
 
-      while (iterator != startVertex)
-      {
-        iterator = previous[iterator];
-        endVertexPath[0] = endVertex;
-        numOfElements++;
-        endVertexPath[numOfElements] = iterator;
-        tempArray = realloc(endVertexPath, numOfElements * sizeof(int));
-        if (tempArray == NULL)
-        {
-          fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
-          exit(1);
-        }
-        endVertexPath = tempArray;
-      }
-      reverse(endVertexPath, numOfElements);
+      // while (iterator != startVertex)
+      // {
+      //   iterator = previous[iterator];
+      //   endVertexPath[0] = endVertex;
+      //   numOfElements++;
+      //   endVertexPath[numOfElements] = iterator;
+      //   tempArray = realloc(endVertexPath, numOfElements * sizeof(int));
+      //   if (tempArray == NULL)
+      //   {
+      //     fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
+      //     exit(1);
+      //   }
+      //   endVertexPath = tempArray;
+      // }
+      // reverse(endVertexPath, numOfElements);
 
       returnValues->length = pathLength[endVertex];
       returnValues->path = endVertexPath;
@@ -222,23 +225,15 @@ void reverse(int arr[], int n)
 
 void printReturnedValues(FILE *out, returnValues_t returnedValues, int startVertex, int endVertex)
 {
+  if (returnedValues->length == -1 || returnedValues->path == NULL || returnedValues->numOfVisitedVertices == -1)
+  {
+    return;
+  }
+
   fprintf(out, "\nShortest path between %d and %d: %d ", startVertex, endVertex, startVertex);
   for (int i = 0; i < returnedValues->numOfVisitedVertices; i++)
   {
     printf("-> %d ", returnedValues->path[i]);
   }
   printf("\nLength of the shortest path: %d\n", returnedValues->length);
-}
-
-int main()
-{
-  graph_t graph = createGraph();
-  loadGraph(graph, "data/danezfilmu");
-
-  int startVertex = 0;
-  int endVertex = 8;
-
-  returnValues_t returnedValues = dijkstra(graph, startVertex, endVertex);
-  printReturnedValues(stdin, returnedValues, startVertex, endVertex);
-  return 0;
 }
