@@ -5,8 +5,13 @@
 
 #define INF 999999
 
-int dijkstra(graph_t graph, int startVertex, int endVertex)
+returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
 {
+  returnValues_t returnValues = malloc(sizeof *returnValues);
+  returnValues->length = -1;
+  returnValues->path = NULL;
+  returnValues->numOfVisitedVertices = 0;
+
   int numOfRows = graph->numOfRows;
   int numOfColumns = graph->numOfColumns;
   double **weight = graph->values;
@@ -15,11 +20,10 @@ int dijkstra(graph_t graph, int startVertex, int endVertex)
   double *pathLength = malloc(sizeof *pathLength * numOfRows * numOfColumns);
   int *previous = malloc(sizeof *previous * numOfRows * numOfColumns);
 
-  // Initialize list of vertex neighbours
   int *neighboursList = malloc(sizeof *neighboursList * 4);
 
   int currentVertex = startVertex;
-  int currentWeight;
+  double currentWeight;
   int nextVertex;
 
   for (int i = 0; i < numOfRows * numOfColumns; i++)
@@ -32,53 +36,84 @@ int dijkstra(graph_t graph, int startVertex, int endVertex)
   pathLength[startVertex] = 0;
   visited[startVertex] = 1;
 
+  int iter = 0;
   while (1)
   {
     addNeighbours(graph, neighboursList, currentVertex);
-    printf("Neighbours of %d: ", currentVertex);
-    for (int i = 0; i < 4; i++)
-    {
-      printf("%d ", neighboursList[i]);
-      printf("pathLength = %g\n", pathLength[neighboursList[i]]);
-    }
-    printf("\n");
 
-    nextVertex = minPathVertex(visited, numOfRows * numOfColumns, neighboursList, pathLength);
-    printf("Next vertex: %d\n", nextVertex);
+    for (int v = 0; v < 4; v++)
+    {
+      if (neighboursList[v] != -1 && visited[neighboursList[v]] == 0)
+      {
+        nextVertex = neighboursList[v];
+        printf("Current vertex: %d\n", currentVertex);
+        printf("Next vertex: %d\n", nextVertex);
 
-    visited[nextVertex] = 1;
+        currentWeight = findWeight(currentVertex, nextVertex, weight, numOfColumns);
+        printf("CurrentWeight: %g\n", currentWeight);
 
-    if (nextVertex == (currentVertex - numOfColumns))
-    {
-      currentWeight = weight[currentVertex][0];
-    }
-    else if (nextVertex == (currentVertex + numOfColumns))
-    {
-      currentWeight = weight[currentVertex][1];
-    }
-    else if (nextVertex == currentVertex + 1)
-    {
-      currentWeight = weight[currentVertex][2];
-    }
-    else if (nextVertex == currentVertex - 1)
-    {
-      currentWeight = weight[currentVertex][3];
-    }
+        if (pathLength[currentVertex] + currentWeight < pathLength[nextVertex])
+        {
+          pathLength[nextVertex] = pathLength[currentVertex] + currentWeight;
+          previous[nextVertex] = currentVertex;
+        }
 
-    currentVertex = nextVertex;
+        printf("pathLength[nextVertex] = %g\n", pathLength[nextVertex]);
+        printf("previous[nextVertex] = %d\n", previous[nextVertex]);
 
-    if (pathLength[currentVertex] + currentWeight < pathLength[nextVertex])
-    {
-      pathLength[nextVertex] = pathLength[currentVertex] + currentWeight;
-      previous[nextVertex] = currentVertex;
+        printf("\n");
+      }
     }
+    currentVertex = minPathVertex(visited, numOfRows * numOfColumns, pathLength);
+    visited[currentVertex] = 1;
 
-    if (areAllVerticesVisited(visited, numOfRows * numOfColumns, pathLength))
+    if (areAllVerticesVisited(visited, numOfRows * numOfColumns, pathLength) || currentVertex == endVertex)
     {
+      // printf("pathLength[]: ");
+      // for (int i = 0; i < numOfRows * numOfColumns; i++)
+      // {
+      //   printf("%g ", pathLength[i]);
+      // }
+      // printf("\nvisited[]: ");
+      // for (int i = 0; i < numOfRows * numOfColumns; i++)
+      // {
+      //   printf("%d ", visited[i]);
+      // }
+      // printf("\nprevious[]: ");
+      // for (int i = 0; i < numOfRows * numOfColumns; i++)
+      // {
+      //   printf("%d ", previous[i]);
+      // }
+
+      int iterator = endVertex;
+      int *endVertexPath = malloc(1 * sizeof(int));
+      int *tempArray = malloc(1 * sizeof(int));
+      int numOfElements = 0;
+
+      while (iterator != startVertex)
+      {
+        iterator = previous[iterator];
+        endVertexPath[0] = endVertex;
+        numOfElements++;
+        endVertexPath[numOfElements] = iterator;
+        tempArray = realloc(endVertexPath, numOfElements * sizeof(int));
+        if (tempArray == NULL)
+        {
+          fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
+          exit(1);
+        }
+        endVertexPath = tempArray;
+      }
+      reverse(endVertexPath, numOfElements);
+
+      returnValues->length = pathLength[endVertex];
+      returnValues->path = endVertexPath;
+      returnValues->numOfVisitedVertices = numOfElements;
+
       break;
     }
-    break;
   }
+  return returnValues;
 }
 
 void addNeighbours(graph_t graph, int *neighboursList, int vertex)
@@ -108,29 +143,17 @@ void addNeighbours(graph_t graph, int *neighboursList, int vertex)
   }
 }
 
-int isElementPresent(int element, int *array, int arraySize)
-{
-  for (int i = 0; i < arraySize; i++)
-  {
-    if (i == element)
-    {
-      return 1;
-    }
-  }
-  return 0;
-}
-
-int minPathVertex(int *visited, int visitedSize, int *neighboursList, double *pathLength)
+int minPathVertex(int *visited, int numOfVertices, double *pathLength)
 {
   int minPath = INF;
   int minVertex = -1;
 
-  for (int i = 0; i < 4; i++)
+  for (int v = 0; v < numOfVertices; v++)
   {
-    if (neighboursList[i] != -1 && visited[neighboursList[i]] == 0 && pathLength[neighboursList[i]] <= minPath)
+    if (visited[v] == 0 && pathLength[v] <= minPath)
     {
-      minPath = pathLength[neighboursList[i]];
-      minVertex = neighboursList[i];
+      minPath = pathLength[v];
+      minVertex = v;
     }
   }
   return minVertex;
@@ -161,11 +184,61 @@ int areAllVerticesVisited(int *visited, int visitedSize, double *pathLength)
   }
 }
 
+double findWeight(int currentVertex, int nextVertex, double **weight, int numOfColumns)
+{
+
+  if (nextVertex == (currentVertex - numOfColumns))
+  {
+    return weight[currentVertex][0];
+  }
+  else if (nextVertex == (currentVertex + numOfColumns))
+  {
+    return weight[currentVertex][1];
+  }
+  else if (nextVertex == currentVertex + 1)
+  {
+    return weight[currentVertex][2];
+  }
+  else if (nextVertex == currentVertex - 1)
+  {
+    return weight[currentVertex][3];
+  }
+  else
+  {
+    fprintf(stderr, "ERROR: %d is not a neighbour of %d ", nextVertex, currentVertex);
+    exit(99);
+  }
+}
+
+void reverse(int arr[], int n)
+{
+  for (int low = 0, high = n - 1; low < high; low++, high--)
+  {
+    int temp = arr[low];
+    arr[low] = arr[high];
+    arr[high] = temp;
+  }
+}
+
+void printReturnedValues(FILE *out, returnValues_t returnedValues, int startVertex, int endVertex)
+{
+  fprintf(out, "\nShortest path between %d and %d: %d ", startVertex, endVertex, startVertex);
+  for (int i = 0; i < returnedValues->numOfVisitedVertices; i++)
+  {
+    printf("-> %d ", returnedValues->path[i]);
+  }
+  printf("\nLength of the shortest path: %d\n", returnedValues->length);
+}
+
 int main()
 {
   graph_t graph = createGraph();
   loadGraph(graph, "data/danezfilmu");
 
-  dijkstra(graph, 4, 12);
+  int startVertex = 0;
+  int endVertex = 8;
+
+  returnValues_t returnedValues = dijkstra(graph, startVertex, endVertex);
+  printReturnedValues(stdin, returnedValues, startVertex, endVertex);
   return 0;
 }

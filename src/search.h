@@ -4,13 +4,17 @@
 typedef struct returnValues
 {
   int *path;
+  int numOfVisitedVertices;
   int length;
-} returnValues_t;
+} * returnValues_t;
 
-int dijkstra(graph_t graph, int startVertex, int endVertex);
+returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex);
 void addNeighbours(graph_t graph, int *neighboursList, int vertex);
 int isElementPresent(int element, int *array, int arraySize);
-int minPathVertex(int *visited, int visitedSize, int *neighboursList, double *pathLength);
+int minPathVertex(int *visited, int numOfVertices, double *pathLength);
 int areAllVerticesVisited(int *visited, int visitedSize, double *pathLength);
+double findWeight(int currentVertex, int nextVertex, double **weight, int numOfColumns);
+void reverse(int arr[], int n);
+void printReturnedValues(FILE *out, returnValues_t returnedValues, int startVertex, int endVertex);
 
 #endif
