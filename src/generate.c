@@ -29,8 +29,8 @@ int genGraph(graph_t graph, double chance, double minW, double maxW)
 			{
 				weight = 0;
 			}
-			graph->values[i][1] = weight;
-			graph->values[i + 1][0] = weight; // zamiana indeksów, żeby krawędź była w obie strony
+			graph->values[i][2] = weight;
+			graph->values[i + 1][3] = weight; // zamiana indeksów, żeby krawędź była w obie strony
 		}
 		else if (i % numOfColumns == numOfColumns - 1)
 		{ // sprawdza czy wierzchołek jest  w ostatniej kolumnie
@@ -42,8 +42,8 @@ int genGraph(graph_t graph, double chance, double minW, double maxW)
 			{
 				weight = 0;
 			}
-			graph->values[i][2] = weight;
-			graph->values[i + numOfColumns][3] = weight;
+			graph->values[i][1] = weight;
+			graph->values[i + numOfColumns][0] = weight;
 		}
 		else
 		{ // to się dzieje dla pozostałych wierzchołków
@@ -55,8 +55,8 @@ int genGraph(graph_t graph, double chance, double minW, double maxW)
 			{
 				weight = 0;
 			}
-			graph->values[i][1] = weight;
-			graph->values[i + 1][0] = weight;
+			graph->values[i][2] = weight;
+			graph->values[i + 1][3] = weight;
 			if (chance < randomInRange(0, 100))
 			{
 				weight = randomInRange(minW, maxW);
@@ -65,8 +65,8 @@ int genGraph(graph_t graph, double chance, double minW, double maxW)
 			{
 				weight = 0;
 			}
-			graph->values[i][2] = weight;
-			graph->values[i + numOfColumns][3] = weight;
+			graph->values[i][1] = weight;
+			graph->values[i + numOfColumns][0] = weight;
 		}
 	}
 }
