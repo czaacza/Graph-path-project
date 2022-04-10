@@ -137,10 +137,7 @@ void saveGraph(graph_t graph, char *outFileName)
 		}
 		fprintf(outFile, "\n");
 	}
-}
-
-graph_t generateGraph()
-{
+	fclose(outFile);
 }
 
 void printGraph(graph_t graph)
