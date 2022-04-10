@@ -132,6 +132,8 @@ int main(int argc, char **argv)
 	// printf("\n");
 
 	graph_t graph = createGraph();
+	graph->numOfColumns = numOfColumns;
+	graph->numOfRows = numOfRows;
 
 	if (genMode == 1)
 	{
