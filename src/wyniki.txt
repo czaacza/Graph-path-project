@@ -1,0 +1,6 @@
+Graf is not connected
+
+Starting vertex: 1
+Ending vertex: 2
+
+There is no connection between vertices 1 and 2.

@@ -32,20 +32,20 @@ void initGraphValues(graph_t graph, int numOfRows, int numOfColumns)
     }
 }
 
-int loadGraph(graph_t graph, char *inFileName)
+void loadGraph(graph_t graph, char *inFileName)
 {
     FILE *inFile = fopen(inFileName, "r");
 
     if (inFile == NULL)
     {
         fprintf(stderr, "ERROR: Couldn't find input file named '%s'\n", inFileName);
-        return 3;
+        exit(3);
     }
 
     if (fscanf(inFile, "%d %d", &(graph->numOfRows), &(graph->numOfColumns)) != 2)
     {
         fprintf(stderr, "Reading numOfRows and numOfColumns from file %s failed.\n", inFileName);
-        return 3;
+        exit(3);
     }
 
     initGraphValues(graph, graph->numOfRows, graph->numOfColumns);
@@ -102,13 +102,13 @@ int loadGraph(graph_t graph, char *inFileName)
     }
 }
 
-int saveGraph(graph_t graph, char *outFileName)
+void saveGraph(graph_t graph, char *outFileName)
 {
     FILE *outFile = fopen(outFileName, "w");
     if (outFile == NULL)
     {
         fprintf(stderr, "ERROR: Couldn't open file named '%s'\n", outFileName);
-        return 4;
+        exit(4);
     }
 
     fprintf(outFile, "%d %d\n", graph->numOfRows, graph->numOfColumns);
