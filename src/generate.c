@@ -17,7 +17,6 @@ int genGraph(graph_t graph, double chance, double minW, double maxW)
 	int numOfColumns = graph->numOfColumns;
 	int numOfRows = graph->numOfRows;
 	double weight;
-	printf("real chance == %g\n", randomInRange(minW, maxW));
 	for (i = 0; i < numOfColumns * numOfRows - 1; i++)
 	{
 		if (i >= numOfColumns * (numOfRows - 1))
