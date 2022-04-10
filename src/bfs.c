@@ -24,10 +24,10 @@ int checkEdge(int start, int end, graph_t graph)
 {
 	int numOfColumns = graph->numOfColumns;
 	double **values = graph->values;
-	if ((end == start - 1 && values[start][0] != 0) ||
-		(end == start + 1 && values[start][1] != 0) ||
-		(end == start + numOfColumns && values[start][2] != 0) ||
-		(end == start - numOfColumns && values[start][3] != 0))
+	if ((end == start - numOfColumns && values[start][0] != 0) ||
+		(end == start + numOfColumns && values[start][1] != 0) ||
+		(end == start + 1 && values[start][2] != 0) ||
+		(end == start - 1 && values[start][3] != 0))
 		return 1;
 	return 0;
 }
