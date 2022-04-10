@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	int startVertex;
 	int endVertex;
 	char *inFileName = "graf_dane";
-	char *outFileName = NULL;
+	char *outFileName;
 
 	while (1)
 	{
@@ -151,17 +151,6 @@ int main(int argc, char **argv)
 		// BFS implementation - check if graph is connected
 		// Dijkstra algorithm implementation - check the shortest path between two vertices
 		// print out [is graph connected], [shortest path], [value of shortest path]
-		if (outFileName == NULL)
-		{
-			if (bfs(graph) == 1)
-			{
-				printf("Graf jest spójny\n");
-			}
-			else
-			{
-				printf("Graf nie jest spójny\n");
-			}
-		}
 		else
 		{
 			FILE *out = fopen(outFileName, "w");
