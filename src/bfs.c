@@ -32,6 +32,12 @@ int checkEdge(int start, int end, graph_t graph)
 	return 0;
 }
 
+static void freeQueue(queue_t queue)
+{
+	free(queue->elements);
+	free(queue);
+}
+
 int bfs(graph_t graph)
 {
 	int i;
@@ -59,8 +65,13 @@ int bfs(graph_t graph)
 			}
 		}
 	}
+	freeQueue(queue);
 	for (i = 0; i < numOfVertices; i++)
 		if (visited[i] == 0)
+		{
+			free(visited);
 			return 0;
+		}
+	free(visited);
 	return 1;
 }
