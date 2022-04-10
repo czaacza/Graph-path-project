@@ -6,10 +6,7 @@
 #include "generate.h"
 #include "bfs.h"
 #include "search.h"
-
-static void printHelp();
-static void checkArguments(int *setArguments, int genMode, int searchMode);
-static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, int chance);
+#include "arguments.h"
 
 int main(int argc, char **argv)
 {
@@ -21,12 +18,12 @@ int main(int argc, char **argv)
 	double minWeight = 1;
 	double maxWeight = 100;
 	int chance = 10;
-	char *genGraphFileName = "graf_dane";
+	char *genGraphFileName = "data/graf_dane";
 
 	int searchMode = 0;
 	int startVertex;
 	int endVertex;
-	char *inFileName = "graf_dane";
+	char *inFileName = "data/graf_dane";
 	char *outFileName;
 
 	int *setArguments = calloc(14, sizeof(int));
@@ -49,7 +46,7 @@ int main(int argc, char **argv)
 				{"end", required_argument, 0, 0},		// 9
 				{"in", required_argument, 0, 0},		// 10
 				{"out", required_argument, 0, 0},		// 11
-				{"h", required_argument, 0, 0},			// 12
+				{"h", no_argument, 0, 0},						// 12
 				{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
@@ -123,7 +120,6 @@ int main(int argc, char **argv)
 		printf("\n");
 	}
 	checkArguments(setArguments, genMode, searchMode);
-	checkArgumentValues(numOfColumns, numOfRows, minWeight, maxWeight, chance);
 	// test - print all arguments values
 	printf(
 			" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %d\n genGraphFileName = %s\n searchMode = %d\n startVertex = %d\n endVertex = %d\n inFileName = %s\n outFileName = %s\n",
@@ -138,13 +134,12 @@ int main(int argc, char **argv)
 	printf("\n");
 
 	graph_t graph = createGraph();
-	graph->numOfColumns = numOfColumns;
-	graph->numOfRows = numOfRows;
 
 	if (genMode == 1)
 	{
 		// generate mode functionalities:
 		// generate graph, write graph to file
+		checkGenArgumentValues(numOfColumns, numOfRows, minWeight, maxWeight, chance);
 
 		initGraphValues(graph, numOfRows, numOfColumns);
 		genGraph(graph, chance, maxWeight, minWeight);
@@ -155,9 +150,11 @@ int main(int argc, char **argv)
 	if (searchMode == 1)
 	{
 		loadGraph(graph, inFileName);
+		numOfRows = graph->numOfRows;
+		numOfColumns = graph->numOfColumns;
+		checkSearchArgumentValues(startVertex, endVertex, numOfRows, numOfColumns);
 
 		FILE *outFile;
-
 		if (setArguments[11] == 1)
 		{
 			outFile = fopen(outFileName, "w");
@@ -171,95 +168,10 @@ int main(int argc, char **argv)
 		{
 			outFile = stdout;
 		}
+
 		returnValues_t returnedValues = dijkstra(graph, startVertex, endVertex);
-		printReturnedValues(outFile, returnedValues, startVertex, endVertex);
+		printReturnedValues(outFile, outFileName, returnedValues);
 	}
 
 	exit(EXIT_SUCCESS);
-}
-
-static void printHelp()
-{
-	char *usage =
-			"Usage: The program can be called using two modes: \n"
-			"-------------------------------------------------------------------------------\n"
-			"-gen : Generator mode, program will generate the graph based on following flags: \n"
-			"------------------------------------------------------------------------------- \n"
-			"-nc cNum: \t cNum - Integer number of columns. Must be greater than 0 \n"
-			"-nr rNum: \t rNum - Integer number of rows. Must be greater than 0 \n"
-			"-minw minW: \t minW - Decimal number of minimal weight of the edge. Must be greater than 0\n"
-			"-maxw maxW: \t maxW - Decimal number of maximal weight of the edge. Must be greater than k \n"
-			"-s chance: \t chance - Integer number represanting % chance of NO existence of an edge between two vertices. Must be a value between 0 and 100\n"
-			"-file file: \t file - Name of the file the graph will be generated to. \n\n"
-			"-------------------------------------------------------------------------------\n"
-			"-search : Search mode, program will find the shortest path between two given vertices: \n"
-			"------------------------------------------------------------------------------- \n"
-			"-start startV: \t startV - Integer number of starting vertex. Must fit in the number of graph's vertices.\n"
-			"-end endV: \t endV - Integer number of ending vertex. Must fit in the number of graph's vertices.\n"
-			"-in inFile: \t inFile - Name of the file the graph will be collected from\n"
-			"-out outFile: \t outFile - Name of the file the shortest path and length will be inserted to.\n\n"
-			"-------------------------------------------------------------------------------\n"
-			"-h - Prints out help menu.\n";
-
-	fprintf(stdout, "%s", usage);
-}
-
-static void checkArguments(int *setArguments, int genMode, int searchMode)
-{
-	int arg;
-
-	for (arg = 1; arg <= 6; arg++)
-	{
-		if (setArguments[arg] == 1 && genMode == 0)
-		{
-			fprintf(stderr, "ERROR: You must firstly declare -gen mode before parsing gen argument.\n");
-			exit(6);
-		}
-	}
-	for (arg = 8; arg <= 11; arg++)
-	{
-		if (setArguments[arg] == 1 && searchMode == 0)
-		{
-			fprintf(stderr, "ERROR: You must firstly declare -search mode before parsing search argument.\n");
-			exit(6);
-		}
-	}
-	if ((setArguments[8] == 0) && searchMode == 1)
-	{
-		fprintf(stderr, "ERROR: Starting vertex not defined.");
-		exit(6);
-	}
-	if ((setArguments[9] == 0) && searchMode == 1)
-	{
-		fprintf(stderr, "ERROR: Ending vertex not defined.");
-		exit(6);
-	}
-}
-
-static void checkArgumentValues(int numOfColumns, int numOfRows, double minWeight, double maxWeight, int chance)
-{
-	if (numOfColumns <= 0)
-	{
-		fprintf(stderr, "ERROR: Number of columns should represent a number greater than 0.\n");
-		exit(8);
-	}
-	if (numOfRows <= 0)
-	{
-		fprintf(stderr, "ERROR: Number of rows should represent a number greater than 0.\n");
-		exit(8);
-	}
-	if (minWeight <= 0)
-	{
-		fprintf(stderr, "ERROR: Weights values should be greater than 0.\n");
-		exit(8);
-	}
-	if (maxWeight < minWeight)
-	{
-		fprintf(stderr, "ERROR: Maximal weight should be greater than minimal weight.\n");
-		exit(8);
-	}
-	if (chance < 0 || chance > 100)
-	{
-		fprintf(stderr, "ERROR: Chance between no existing of an edge should be a value between 0 and 100");
-	}
 }

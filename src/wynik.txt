@@ -1,0 +1,5 @@
+Starting vertex: 1
+Ending vertex: 22
+
+Shortest path between 1 and 33: 1 -> 5 -> 9 -> 10 -> 14 -> 22 
+Length of the shortest path: 2.7672
