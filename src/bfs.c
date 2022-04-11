@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "bfs.h"
 #include "graph.h"
@@ -38,14 +39,30 @@ static void freeQueue(queue_t queue)
 	free(queue);
 }
 
+queue_t createQueue(int numOfVertices)
+{
+	queue_t queue = malloc(sizeof(*queue));
+	if (queue == NULL)
+	{
+		fprintf(stderr, "ERROR: Memory for BFS queue unsuccesfully allocated.\n");
+		exit(1);
+	}
+	queue->elements = malloc(sizeof(int) * numOfVertices);
+	if (queue->elements == NULL)
+	{
+		fprintf(stderr, "ERROR: Memory for elements in BFS queue unsuccesfully allocated.\n");
+		exit(1);
+	}
+	queue->first = queue->last = -1;
+	return queue;
+}
+
 int bfs(graph_t graph)
 {
 	int i;
 	int numOfVertices = graph->numOfColumns * graph->numOfRows;
 
-	queue_t queue = malloc(sizeof queue);
-	queue->elements = malloc(sizeof(int) * numOfVertices);
-	queue->first = queue->last = -1;
+	queue_t queue = createQueue(numOfVertices);
 
 	int currentVertex = 0; // zaczynamy od 0
 	int *visited = malloc(sizeof(int) * numOfVertices);
@@ -65,7 +82,8 @@ int bfs(graph_t graph)
 			}
 		}
 	}
-	freeQueue(queue);
+	free(queue->elements);
+	free(queue);
 	for (i = 0; i < numOfVertices; i++)
 		if (visited[i] == 0)
 		{
