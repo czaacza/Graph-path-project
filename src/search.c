@@ -5,7 +5,7 @@
 
 #define INF 999999
 
-returnValues_t dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex)
+void dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex)
 {
 	returnValues->length = -1;
 	returnValues->path = NULL;
@@ -89,13 +89,13 @@ returnValues_t dijkstra(returnValues_t returnValues, graph_t graph, int startVer
 
 			int iterator = endVertex;
 			int *endVertexPath = malloc(1 * sizeof(int));
-			int *tempArray = malloc(1 * sizeof(int));
+			endVertexPath[0] = endVertex;
+			int *tempArray;
 			int numOfElements = 1;
 
 			while (iterator != startVertex)
 			{
 				iterator = previous[iterator];
-				endVertexPath[0] = endVertex;
 				endVertexPath[numOfElements] = iterator;
 				numOfElements++;
 				tempArray = realloc(endVertexPath, numOfElements * sizeof(int) + 1);
@@ -120,7 +120,7 @@ returnValues_t dijkstra(returnValues_t returnValues, graph_t graph, int startVer
 	free(previous);
 	free(neighboursList);
 
-	return returnValues;
+	return;
 }
 
 void addNeighbours(graph_t graph, int *neighboursList, int vertex)

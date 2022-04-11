@@ -124,13 +124,6 @@ int main(int argc, char **argv)
 	// 		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %g\n genGraphFileName = %s\n searchMode = %d\n startVertex = %d\n endVertex = %d\n inFileName = %s\n outFileName = %s\n",
 	// 		genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode, startVertex, endVertex, inFileName, outFileName);
 
-	// printf("set arguments: ");
-	// for (int i = 0; i < 14; i++)
-	// {
-	// 	printf("%d ", setArguments[i]);
-	// }
-	// printf("\n");
-
 	graph_t graph = createGraph();
 	graph->numOfColumns = numOfColumns;
 	graph->numOfRows = numOfRows;
@@ -175,7 +168,9 @@ int main(int argc, char **argv)
 
 		returnValues_t returnedValues = malloc(sizeof *returnedValues);
 		dijkstra(returnedValues, graph, startVertex, endVertex);
+
 		printReturnedValues(outFile, outFileName, returnedValues, startVertex, endVertex);
+
 		free(returnedValues->path);
 		free(returnedValues);
 		fclose(outFile);

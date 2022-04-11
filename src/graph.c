@@ -99,8 +99,8 @@ void loadGraph(graph_t graph, char *inFileName)
 
 			continue;
 		}
-		fclose(inFile);
 	}
+	fclose(inFile);
 }
 
 void saveGraph(graph_t graph, char *outFileName)
@@ -159,7 +159,10 @@ void freeGraph(graph_t graph)
 {
 	int i;
 	for (i = 0; i < graph->numOfColumns * graph->numOfRows; i++)
+	{
 		free(graph->values[i]);
+	}
+
 	free(graph->values);
 	free(graph);
 }
