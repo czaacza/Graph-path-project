@@ -99,6 +99,7 @@ void loadGraph(graph_t graph, char *inFileName)
 
 			continue;
 		}
+		fclose(inFile);
 	}
 }
 

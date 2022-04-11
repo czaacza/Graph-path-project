@@ -5,9 +5,8 @@
 
 #define INF 999999
 
-returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
+returnValues_t dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex)
 {
-	returnValues_t returnValues = malloc(sizeof *returnValues);
 	returnValues->length = -1;
 	returnValues->path = NULL;
 	returnValues->numOfVisitedVertices = -1;
@@ -102,7 +101,7 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
 				tempArray = realloc(endVertexPath, numOfElements * sizeof(int) + 1);
 				if (tempArray == NULL)
 				{
-					fprintf(stderr, "ERROR: Memory for endVertexPath wrongly allocated.\n");
+					fprintf(stderr, "ERROR: Memory for endVertexPath unsuccessfully allocated.\n");
 					exit(1);
 				}
 				endVertexPath = tempArray;
@@ -116,6 +115,11 @@ returnValues_t dijkstra(graph_t graph, int startVertex, int endVertex)
 			break;
 		}
 	}
+	free(visited);
+	free(pathLength);
+	free(previous);
+	free(neighboursList);
+
 	return returnValues;
 }
 

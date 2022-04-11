@@ -33,20 +33,20 @@ int main(int argc, char **argv)
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-			{"gen", no_argument, 0, 0},			// 0
-			{"nc", required_argument, 0, 0},	// 1
-			{"nr", required_argument, 0, 0},	// 2
-			{"minw", required_argument, 0, 0},	// 3
-			{"maxw", required_argument, 0, 0},	// 4
-			{"s", required_argument, 0, 0},		// 5
-			{"file", required_argument, 0, 0},	// 6
-			{"search", no_argument, 0, 0},		// 7
-			{"start", required_argument, 0, 0}, // 8
-			{"end", required_argument, 0, 0},	// 9
-			{"in", required_argument, 0, 0},	// 10
-			{"out", required_argument, 0, 0},	// 11
-			{"h", no_argument, 0, 0},			// 12
-			{0, 0, 0, 0}};
+				{"gen", no_argument, 0, 0},					// 0
+				{"nc", required_argument, 0, 0},		// 1
+				{"nr", required_argument, 0, 0},		// 2
+				{"minw", required_argument, 0, 0},	// 3
+				{"maxw", required_argument, 0, 0},	// 4
+				{"s", required_argument, 0, 0},			// 5
+				{"file", required_argument, 0, 0},	// 6
+				{"search", no_argument, 0, 0},			// 7
+				{"start", required_argument, 0, 0}, // 8
+				{"end", required_argument, 0, 0},		// 9
+				{"in", required_argument, 0, 0},		// 10
+				{"out", required_argument, 0, 0},		// 11
+				{"h", no_argument, 0, 0},						// 12
+				{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 		numOfColumns = graph->numOfColumns;
 		checkSearchArgumentValues(startVertex, endVertex, numOfRows, numOfColumns);
 
-		FILE *outFile;
+		FILE *outFile = stdout;
 		if (setArguments[11] == 1)
 		{
 			outFile = fopen(outFileName, "w");
@@ -162,10 +162,6 @@ int main(int argc, char **argv)
 				fprintf(stderr, "ERROR: Couldn't open file named '%s'\n", outFileName);
 				exit(4);
 			}
-		}
-		else
-		{
-			outFile = stdout;
 		}
 
 		if (bfs(graph) == 1)
@@ -177,10 +173,15 @@ int main(int argc, char **argv)
 			fprintf(outFile, "Graf is not connected\n");
 		}
 
-		returnValues_t returnedValues = dijkstra(graph, startVertex, endVertex);
+		returnValues_t returnedValues = malloc(sizeof *returnedValues);
+		dijkstra(returnedValues, graph, startVertex, endVertex);
 		printReturnedValues(outFile, outFileName, returnedValues, startVertex, endVertex);
+		free(returnedValues->path);
+		free(returnedValues);
+		fclose(outFile);
 	}
 
 	freeGraph(graph);
+	free(setArguments);
 	exit(EXIT_SUCCESS);
 }
