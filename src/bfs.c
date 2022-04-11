@@ -33,12 +33,6 @@ int checkEdge(int start, int end, graph_t graph)
 	return 0;
 }
 
-static void freeQueue(queue_t queue)
-{
-	free(queue->elements);
-	free(queue);
-}
-
 queue_t createQueue(int numOfVertices)
 {
 	queue_t queue = malloc(sizeof(*queue));
@@ -50,6 +44,7 @@ queue_t createQueue(int numOfVertices)
 	queue->elements = malloc(sizeof(int) * numOfVertices);
 	if (queue->elements == NULL)
 	{
+		free(queue);
 		fprintf(stderr, "ERROR: Memory for elements in BFS queue unsuccesfully allocated.\n");
 		exit(1);
 	}
@@ -65,7 +60,12 @@ int bfs(graph_t graph)
 	queue_t queue = createQueue(numOfVertices);
 
 	int currentVertex = 0; // zaczynamy od 0
-	int *visited = malloc(sizeof(int) * numOfVertices);
+	int *visited = malloc(numOfVertices * sizeof(visited));
+	if (visited == NULL)
+	{
+		fprintf(stderr, "ERROR: Memory for visited vertices in BFS unsuccesfully allocated.\n");
+		exit(1);
+	}
 
 	visited[currentVertex] = 1;
 	enqueue(queue, currentVertex);
