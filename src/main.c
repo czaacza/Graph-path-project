@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		int this_option_optind = optind ? optind : 1;
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
@@ -165,7 +164,6 @@ int main(int argc, char **argv)
 		{
 			fprintf(outFile, "Graf is not connected\n");
 		}
-
 		returnValues_t returnedValues = malloc(sizeof *returnedValues);
 		dijkstra(returnedValues, graph, startVertex, endVertex);
 
