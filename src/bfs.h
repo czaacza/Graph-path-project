@@ -11,8 +11,4 @@ typedef struct
 } * queue_t;
 
 int bfs(graph_t graph);
-void enqueue(queue_t queue, int currentVertex);
-int isEmpty(queue_t queue);
-int dequeue(queue_t queue);
-int checkEdge(int start, int end, graph_t graph);
 #endif
