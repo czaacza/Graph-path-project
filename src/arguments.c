@@ -22,7 +22,7 @@ void printHelp()
       "-in inFile: \t inFile - Name of the file the graph will be collected from\n"
       "-out outFile: \t outFile - Name of the file the shortest path and length will be inserted to.\n\n"
       "-------------------------------------------------------------------------------\n"
-      "-h - Prints out help menu.\n";
+      "-h - Prints out help menu.\n\n";
 
   fprintf(stdout, "%s", usage);
 }

@@ -1,0 +1,5 @@
+15	TX00CK66	Sensor Based Mobile Applications
+5 	TX00DR64	C Programming in IoT Devices			Języki i metody programowania 1/2
+5	TX00DR65	Object-Oriented Programming in IoT Devices	Programowanie obiektowe
+5	TX00CI61	Embedded Systems Programming		Technika mikroprocesowa
+	

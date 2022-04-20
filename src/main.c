@@ -6,6 +6,7 @@
 #include "generate.h"
 #include "bfs.h"
 #include "search.h"
+#include "inout.h"
 #include "arguments.h"
 
 int main(int argc, char **argv)
@@ -29,24 +30,23 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		int this_option_optind = optind ? optind : 1;
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-			{"gen", no_argument, 0, 0},			// 0
-			{"nc", required_argument, 0, 0},	// 1
-			{"nr", required_argument, 0, 0},	// 2
-			{"minw", required_argument, 0, 0},	// 3
-			{"maxw", required_argument, 0, 0},	// 4
-			{"s", required_argument, 0, 0},		// 5
-			{"file", required_argument, 0, 0},	// 6
-			{"search", no_argument, 0, 0},		// 7
-			{"start", required_argument, 0, 0}, // 8
-			{"end", required_argument, 0, 0},	// 9
-			{"in", required_argument, 0, 0},	// 10
-			{"out", required_argument, 0, 0},	// 11
-			{"h", no_argument, 0, 0},			// 12
-			{0, 0, 0, 0}};
+				{"gen", no_argument, 0, 0},					// 0
+				{"nc", required_argument, 0, 0},		// 1
+				{"nr", required_argument, 0, 0},		// 2
+				{"minw", required_argument, 0, 0},	// 3
+				{"maxw", required_argument, 0, 0},	// 4
+				{"s", required_argument, 0, 0},			// 5
+				{"file", required_argument, 0, 0},	// 6
+				{"search", no_argument, 0, 0},			// 7
+				{"start", required_argument, 0, 0}, // 8
+				{"end", required_argument, 0, 0},		// 9
+				{"in", required_argument, 0, 0},		// 10
+				{"out", required_argument, 0, 0},		// 11
+				{"h", no_argument, 0, 0},						// 12
+				{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
 		case '?':
 			printf("Incorrect option, try ./a.out -h\n");
-			break;
+			exit(6);
 
 		default:
 			printHelp();
@@ -165,7 +165,6 @@ int main(int argc, char **argv)
 		{
 			fprintf(outFile, "Graf is not connected\n");
 		}
-
 		returnValues_t returnedValues = malloc(sizeof *returnedValues);
 		dijkstra(returnedValues, graph, startVertex, endVertex);
 
