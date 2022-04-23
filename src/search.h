@@ -1,11 +1,13 @@
 #ifndef _SEARCH_H_
 #define _SEARCH_H_
 
+#include "graph.h"
+
 typedef struct returnValues
 {
-  int *path;
-  int numOfVisitedVertices;
-  double length;
+	int *path;
+	int numOfVisitedVertices;
+	double length;
 } * returnValues_t;
 
 void dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex);

@@ -8,6 +8,7 @@
 #include "search.h"
 #include "inout.h"
 #include "arguments.h"
+#include "split.h"
 
 int main(int argc, char **argv)
 {
@@ -25,28 +26,36 @@ int main(int argc, char **argv)
 	int endVertex;
 	char *inFileName = "data/graf_dane";
 	char *outFileName;
+	int splitMode = 0;
+	int splitStart;
+	int splitEnd;
+	char *outSplitFileName = "data/graf_dane";
 
-	int *setArguments = calloc(14, sizeof(int));
+	int *setArguments = calloc(18, sizeof(int));
 
 	while (1)
 	{
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-				{"gen", no_argument, 0, 0},					// 0
-				{"nc", required_argument, 0, 0},		// 1
-				{"nr", required_argument, 0, 0},		// 2
-				{"minw", required_argument, 0, 0},	// 3
-				{"maxw", required_argument, 0, 0},	// 4
-				{"s", required_argument, 0, 0},			// 5
-				{"file", required_argument, 0, 0},	// 6
-				{"search", no_argument, 0, 0},			// 7
-				{"start", required_argument, 0, 0}, // 8
-				{"end", required_argument, 0, 0},		// 9
-				{"in", required_argument, 0, 0},		// 10
-				{"out", required_argument, 0, 0},		// 11
-				{"h", no_argument, 0, 0},						// 12
-				{0, 0, 0, 0}};
+			{"gen", no_argument, 0, 0},			   // 0
+			{"nc", required_argument, 0, 0},	   // 1
+			{"nr", required_argument, 0, 0},	   // 2
+			{"minw", required_argument, 0, 0},	   // 3
+			{"maxw", required_argument, 0, 0},	   // 4
+			{"s", required_argument, 0, 0},		   // 5
+			{"file", required_argument, 0, 0},	   // 6
+			{"search", no_argument, 0, 0},		   // 7
+			{"start", required_argument, 0, 0},	   // 8
+			{"end", required_argument, 0, 0},	   // 9
+			{"in", required_argument, 0, 0},	   // 10
+			{"out", required_argument, 0, 0},	   // 11
+			{"split", no_argument, 0, 0},		   // 12
+			{"splits", required_argument, 0, 0},   // 13
+			{"splite", required_argument, 0, 0},   // 14
+			{"splitout", required_argument, 0, 0}, // 15
+			{"h", no_argument, 0, 0},			   // 16
+			{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
@@ -96,6 +105,18 @@ int main(int argc, char **argv)
 				outFileName = optarg;
 				break;
 			case 12:
+				splitMode = 1;
+				break;
+			case 13:
+				splitStart = atoi(optarg);
+				break;
+			case 14:
+				splitEnd = atoi(optarg);
+				break;
+			case 15:
+				outSplitFileName = optarg;
+				break;
+			case 16:
 				printHelp();
 				break;
 			}
@@ -118,7 +139,7 @@ int main(int argc, char **argv)
 			printf("%s ", argv[optind++]);
 		printf("\n");
 	}
-	checkArguments(setArguments, genMode, searchMode);
+	checkArguments(setArguments, genMode, searchMode, splitMode);
 
 	// printf(
 	// 		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %g\n genGraphFileName = %s\n searchMode = %d\n startVertex = %d\n endVertex = %d\n inFileName = %s\n outFileName = %s\n",
@@ -138,12 +159,24 @@ int main(int argc, char **argv)
 		genGraph(graph, chance, minWeight, maxWeight);
 		saveGraph(graph, genGraphFileName);
 	}
-
-	if (searchMode == 1)
+	if (splitMode == 1 || searchMode == 1)
 	{
 		loadGraph(graph, inFileName);
 		numOfRows = graph->numOfRows;
 		numOfColumns = graph->numOfColumns;
+	}
+	if (splitMode == 1)
+	{
+		checkSplitArgumentValues(splitStart, splitEnd, numOfRows, numOfColumns);
+
+		if (setArguments[15] == 1)
+		{
+			split(graph, splitStart, splitEnd);
+			saveGraph(graph, outSplitFileName);
+		}
+	}
+	if (searchMode == 1)
+	{
 		checkSearchArgumentValues(startVertex, endVertex, numOfRows, numOfColumns);
 
 		FILE *outFile = stdout;
