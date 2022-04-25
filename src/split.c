@@ -63,6 +63,7 @@ void split(graph_t graph, int splitStart, int splitEnd)
 			removeEdge(graph, path[i], 2);
 			removeEdge(graph, path[i], 1);
 		}
-		free(pathData->path);
-		free(pathData);
 	}
+	free(pathData->path);
+	free(pathData);
+}
