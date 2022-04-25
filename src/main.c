@@ -38,24 +38,24 @@ int main(int argc, char **argv)
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-			{"gen", no_argument, 0, 0},			   // 0
-			{"nc", required_argument, 0, 0},	   // 1
-			{"nr", required_argument, 0, 0},	   // 2
-			{"minw", required_argument, 0, 0},	   // 3
-			{"maxw", required_argument, 0, 0},	   // 4
-			{"s", required_argument, 0, 0},		   // 5
-			{"file", required_argument, 0, 0},	   // 6
-			{"search", no_argument, 0, 0},		   // 7
-			{"start", required_argument, 0, 0},	   // 8
-			{"end", required_argument, 0, 0},	   // 9
-			{"in", required_argument, 0, 0},	   // 10
-			{"out", required_argument, 0, 0},	   // 11
-			{"split", no_argument, 0, 0},		   // 12
-			{"splits", required_argument, 0, 0},   // 13
-			{"splite", required_argument, 0, 0},   // 14
-			{"splitout", required_argument, 0, 0}, // 15
-			{"h", no_argument, 0, 0},			   // 16
-			{0, 0, 0, 0}};
+				{"gen", no_argument, 0, 0},						 // 0
+				{"nc", required_argument, 0, 0},			 // 1
+				{"nr", required_argument, 0, 0},			 // 2
+				{"minw", required_argument, 0, 0},		 // 3
+				{"maxw", required_argument, 0, 0},		 // 4
+				{"s", required_argument, 0, 0},				 // 5
+				{"file", required_argument, 0, 0},		 // 6
+				{"search", no_argument, 0, 0},				 // 7
+				{"start", required_argument, 0, 0},		 // 8
+				{"end", required_argument, 0, 0},			 // 9
+				{"in", required_argument, 0, 0},			 // 10
+				{"out", required_argument, 0, 0},			 // 11
+				{"split", no_argument, 0, 0},					 // 12
+				{"splits", required_argument, 0, 0},	 // 13
+				{"splite", required_argument, 0, 0},	 // 14
+				{"splitout", required_argument, 0, 0}, // 15
+				{"h", no_argument, 0, 0},							 // 16
+				{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 				break;
 			case 16:
 				printHelp();
-				break;
+				exit(0);
 			}
 			break;
 
@@ -128,6 +128,7 @@ int main(int argc, char **argv)
 
 		default:
 			printHelp();
+			exit(0);
 		}
 		setArguments[optionIndex] = 1;
 	}
@@ -141,18 +142,12 @@ int main(int argc, char **argv)
 	}
 	checkArguments(setArguments, genMode, searchMode, splitMode);
 
-	// printf(
-	// 		" genMode = %d\n numOfColumns = %d\n numOfRows = %d\n minWeight = %g\n maxWeight = %g\n chance = %g\n genGraphFileName = %s\n searchMode = %d\n startVertex = %d\n endVertex = %d\n inFileName = %s\n outFileName = %s\n",
-	// 		genMode, numOfColumns, numOfRows, minWeight, maxWeight, chance, genGraphFileName, searchMode, startVertex, endVertex, inFileName, outFileName);
-
 	graph_t graph = createGraph();
 	graph->numOfColumns = numOfColumns;
 	graph->numOfRows = numOfRows;
 
 	if (genMode == 1)
 	{
-		// generate mode functionalities:
-		// generate graph, write graph to file
 		checkGenArgumentValues(numOfColumns, numOfRows, minWeight, maxWeight, chance);
 
 		initGraphValues(graph, numOfRows, numOfColumns);
@@ -165,16 +160,16 @@ int main(int argc, char **argv)
 		numOfRows = graph->numOfRows;
 		numOfColumns = graph->numOfColumns;
 	}
+
 	if (splitMode == 1)
 	{
 		checkSplitArgumentValues(splitStart, splitEnd, numOfRows, numOfColumns);
 
-		if (setArguments[15] == 1)
-		{
-			split(graph, splitStart, splitEnd);
-			saveGraph(graph, outSplitFileName);
-		}
+		split(graph, splitStart, splitEnd);
+		printf("Graph succesfully splitted.\n");
+		saveGraph(graph, outSplitFileName);
 	}
+
 	if (searchMode == 1)
 	{
 		checkSearchArgumentValues(startVertex, endVertex, numOfRows, numOfColumns);

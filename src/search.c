@@ -53,34 +53,11 @@ void dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int e
 					pathLength[nextVertex] = pathLength[currentVertex] + currentWeight;
 					previous[nextVertex] = currentVertex;
 				}
-
-				// printf("Current vertex: %d\n", currentVertex);
-				// printf("Next vertex: %d\n", nextVertex);
-				// printf("CurrentWeight: %g\n", currentWeight);
-				// printf("pathLength[nextVertex] = %g\n", pathLength[nextVertex]);
-				// printf("previous[nextVertex] = %d\n", previous[nextVertex]);
-				// printf("\n");
 			}
 		}
 
 		if (areAllVerticesVisited(visited, numOfRows * numOfColumns, pathLength) || currentVertex == endVertex)
 		{
-			// printf("pathLength[]: ");
-			// for (int i = 0; i < numOfRows * numOfColumns; i++)
-			// {
-			//   printf("%g ", pathLength[i]);
-			// }
-			// printf("\nvisited[]: ");
-			// for (int i = 0; i < numOfRows * numOfColumns; i++)
-			// {
-			//   printf("%d ", visited[i]);
-			// }
-			// printf("\nprevious[]: ");
-			// for (int i = 0; i < numOfRows * numOfColumns; i++)
-			// {
-			//   printf("%d ", previous[i]);
-			// }
-			// printf("\n");
 
 			if (pathLength[endVertex] == INF)
 			{

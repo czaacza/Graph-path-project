@@ -12,7 +12,6 @@ typedef struct returnValues
 
 void dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex);
 void addNeighbours(graph_t graph, int *neighboursList, int vertex);
-int isElementPresent(int element, int *array, int arraySize);
 int minPathVertex(int *visited, int numOfVertices, double *pathLength);
 int areAllVerticesVisited(int *visited, int visitedSize, double *pathLength);
 double findWeight(int currentVertex, int nextVertex, double **weight, int numOfColumns);
