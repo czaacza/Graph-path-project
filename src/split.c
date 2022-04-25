@@ -47,7 +47,7 @@ void split(graph_t graph, int splitStart, int splitEnd)
 	for (i = 0; i < length; i++)
 	{
 		if (path[i] == numOfColumns * numOfRows - 1)
-		{ // vertex is in top right corner
+		{ // vertex is in bottom right corner
 			continue;
 		}
 		else if (path[i] % numOfColumns == numOfColumns - 1)
@@ -62,10 +62,7 @@ void split(graph_t graph, int splitStart, int splitEnd)
 		{
 			removeEdge(graph, path[i], 2);
 			removeEdge(graph, path[i], 1);
-			printf("%d\n", path[i]);
 		}
+		free(pathData->path);
+		free(pathData);
 	}
-	free(pathData->path);
-	free(pathData);
-	free(path);
-}
