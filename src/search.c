@@ -3,7 +3,7 @@
 #include "graph.h"
 #include "search.h"
 
-#define INF 999999
+#define INF 9999999
 
 void dijkstra(returnValues_t returnValues, graph_t graph, int startVertex, int endVertex)
 {

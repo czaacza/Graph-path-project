@@ -38,29 +38,31 @@ int main(int argc, char **argv)
 		int optionIndex = 0;
 
 		static struct option longOptions[] = {
-				{"gen", no_argument, 0, 0},						 // 0
-				{"nc", required_argument, 0, 0},			 // 1
-				{"nr", required_argument, 0, 0},			 // 2
-				{"minw", required_argument, 0, 0},		 // 3
-				{"maxw", required_argument, 0, 0},		 // 4
-				{"s", required_argument, 0, 0},				 // 5
-				{"file", required_argument, 0, 0},		 // 6
-				{"search", no_argument, 0, 0},				 // 7
-				{"start", required_argument, 0, 0},		 // 8
-				{"end", required_argument, 0, 0},			 // 9
-				{"in", required_argument, 0, 0},			 // 10
-				{"out", required_argument, 0, 0},			 // 11
-				{"split", no_argument, 0, 0},					 // 12
-				{"splits", required_argument, 0, 0},	 // 13
-				{"splite", required_argument, 0, 0},	 // 14
-				{"splitout", required_argument, 0, 0}, // 15
-				{"h", no_argument, 0, 0},							 // 16
-				{0, 0, 0, 0}};
+			{"gen", no_argument, 0, 0},			   // 0
+			{"nc", required_argument, 0, 0},	   // 1
+			{"nr", required_argument, 0, 0},	   // 2
+			{"minw", required_argument, 0, 0},	   // 3
+			{"maxw", required_argument, 0, 0},	   // 4
+			{"s", required_argument, 0, 0},		   // 5
+			{"file", required_argument, 0, 0},	   // 6
+			{"search", no_argument, 0, 0},		   // 7
+			{"start", required_argument, 0, 0},	   // 8
+			{"end", required_argument, 0, 0},	   // 9
+			{"in", required_argument, 0, 0},	   // 10
+			{"out", required_argument, 0, 0},	   // 11
+			{"split", no_argument, 0, 0},		   // 12
+			{"splits", required_argument, 0, 0},   // 13
+			{"splite", required_argument, 0, 0},   // 14
+			{"splitout", required_argument, 0, 0}, // 15
+			{"h", no_argument, 0, 0},			   // 16
+			{0, 0, 0, 0}};
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
 		if (opt == -1)
 		{
+			printHelp();
+			exit(0);
 			break;
 		}
 		switch (opt)
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
 			break;
 
 		case '?':
-			printf("Incorrect option, try ./a.out -h\n");
+			printf("Incorrect option, try %s -h\n", argv[0]);
 			exit(6);
 
 		default:
