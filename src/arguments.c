@@ -5,31 +5,31 @@
 void printHelp()
 {
 	char *usage =
-			"Usage: The program can be called using three modes: \n"
-			"-------------------------------------------------------------------------------\n"
-			"-gen : Generator mode, program will generate the graph based on following flags: \n"
-			"------------------------------------------------------------------------------- \n"
-			"-nc cNum: \t cNum - Integer number of columns. Must be greater than 0 \n"
-			"-nr rNum: \t rNum - Integer number of rows. Must be greater than 0 \n"
-			"-minw minW: \t minW - Decimal number of minimal weight of the edge. Must be greater than 0\n"
-			"-maxw maxW: \t maxW - Decimal number of maximal weight of the edge. Must be greater than k \n"
-			"-s chance: \t chance - Integer number represanting % chance of NO existence of an edge between two vertices. Must be a value between 0 and 100\n"
-			"-file file: \t file - Name of the file the graph will be generated to. \n\n"
-			"-------------------------------------------------------------------------------\n"
-			"-search : Search mode, program will find the shortest path between two given vertices: \n"
-			"------------------------------------------------------------------------------- \n"
-			"-start startV: \t startV - Integer number of starting vertex. Must fit in the number of graph's vertices.\n"
-			"-end endV: \t endV - Integer number of ending vertex. Must fit in the number of graph's vertices.\n"
-			"-in inFile: \t inFile - Name of the file the graph will be collected from\n"
-			"-out outFile: \t outFile - Name of the file the shortest path and length will be inserted to.\n\n"
-			"-------------------------------------------------------------------------------\n"
-			"-split : Split mode, program will split graph (given after the option -in) along the shortest path between two given vertices\n"
-			"-------------------------------------------------------------------------------\n"
-			"-splits startS: \t startS - Integer number of starting vertex. Starting vertex must be in the first row of the graph\n"
-			"-splite endS: \t endS - Integer number of ending vertex. Ending vertex must be in the last row of the graph\n"
-			"-splitout outSplitFile: \t outSplitFile - Name of the file the splited graph will be generated to\n\n"
-			"-------------------------------------------------------------------------------\n"
-			"-h - Prints out help menu.\n\n";
+		"Usage: The program can be called using three modes: \n"
+		"-------------------------------------------------------------------------------\n"
+		"-gen : Generator mode, program will generate the graph based on following flags: \n"
+		"------------------------------------------------------------------------------- \n"
+		"-nc cNum: \t cNum - Integer number of columns. Must be greater than 0 \n"
+		"-nr rNum: \t rNum - Integer number of rows. Must be greater than 0 \n"
+		"-minw minW: \t minW - Decimal number of minimal weight of the edge. Must be greater than 0\n"
+		"-maxw maxW: \t maxW - Decimal number of maximal weight of the edge. Must be greater than k \n"
+		"-s chance: \t chance - Integer number represanting % chance of NO existence of an edge between two vertices. Must be a value between 0 and 100\n"
+		"-file file: \t file - Name of the file the graph will be generated to. \n\n"
+		"-------------------------------------------------------------------------------\n"
+		"-search : Search mode, program will find the shortest path between two given vertices: \n"
+		"------------------------------------------------------------------------------- \n"
+		"-start startV: \t startV - Integer number of starting vertex. Must fit in the number of graph's vertices.\n"
+		"-end endV: \t endV - Integer number of ending vertex. Must fit in the number of graph's vertices.\n"
+		"-in inFile: \t inFile - Name of the file the graph will be collected from\n"
+		"-out outFile: \t outFile - Name of the file the shortest path and length will be inserted to.\n\n"
+		"-------------------------------------------------------------------------------\n"
+		"-split : Split mode, program will split graph (given after the option -in) along the shortest path between two given vertices\n"
+		"-------------------------------------------------------------------------------\n"
+		"-splits startS: \t startS - Integer number of starting vertex. Starting vertex must be in the first row of the graph\n"
+		"-splite endS: \t endS - Integer number of ending vertex. Ending vertex must be in the last row of the graph\n"
+		"-splitout outSplitFile: \t outSplitFile - Name of the file the splited graph will be generated to\n\n"
+		"-------------------------------------------------------------------------------\n"
+		"-h - Prints out help menu.\n\n";
 
 	fprintf(stdout, "%s", usage);
 }
@@ -105,14 +105,14 @@ void checkGenArgumentValues(int numOfColumns, int numOfRows, double minWeight, d
 		fprintf(stderr, "ERROR: Number of rows should represent a number greater than 0.\n");
 		exit(8);
 	}
-	if (minWeight <= 0)
+	if (minWeight <= 0 || minWeight >= 1000)
 	{
-		fprintf(stderr, "ERROR: Weights values should be greater than 0.\n");
+		fprintf(stderr, "ERROR: Weights values should be greater than 0 and less than 1000.\n");
 		exit(8);
 	}
-	if (maxWeight < minWeight)
+	if (maxWeight < minWeight || maxWeight >= 1000)
 	{
-		fprintf(stderr, "ERROR: Maximal weight should be greater than minimal weight.\n");
+		fprintf(stderr, "ERROR: Maximal weight should be greater than minimal weight and less than 1000.\n");
 		exit(8);
 	}
 	if (chance < 0 || chance > 100)
