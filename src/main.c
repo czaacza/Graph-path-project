@@ -59,10 +59,14 @@ int main(int argc, char **argv)
 
 		opt = getopt_long_only(argc, argv, "", longOptions, &optionIndex);
 
-		if (opt == -1)
+		if (argc == 1)
 		{
 			printHelp();
 			exit(0);
+			break;
+		}
+		if (opt == -1)
+		{
 			break;
 		}
 		switch (opt)
