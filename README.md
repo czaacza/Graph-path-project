@@ -3,6 +3,8 @@ C program using Dijkstra and BFS Algorithms, generating, splitting and searching
 
 Program made as a part of Applied Informatics programming course at Warsaw University of Technology.
 
+<img src="https://github.com/czaacza/Graph-path-project/blob/master/helpItems/img/programUse.PNG" width="768" height="160" />
+
 ## Program structure
 
 **The program consists of three operating modes:**
