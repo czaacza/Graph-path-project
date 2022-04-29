@@ -109,3 +109,7 @@ graph is not connected and there is no connection between given vertices
 
 all 3 modes simultaneously: graph is generated to the default file (data/graf_dane), graph from the default file is splitted, splitted graph is saved in the default file,
 then program checks if graph is connected and finds the shortest path between given vertices, results are written to stdout
+
+## Contributors
+- Mateusz Czarnecki ([czaacza](https://github.com/czaacza))
+- Paweł Jędrzejczyk ([Javelel](https://github.com/Javelel))
