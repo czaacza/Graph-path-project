@@ -69,9 +69,9 @@ The program can be called using following parameters:
 
 #### `-split`  Split mode, program will split graph (given after the option -in) along the shortest path between two given vertices
 
-`-splits`    - Integer number of starting vertex. Starting vertex must be in the first row of the graph
+`-splits`    - Integer number of starting vertex. Starting vertex must be placed on the edge of the graph.
 
-`-splite`    - Integer number of ending vertex. Ending vertex must be in the last row of the graph
+`-splite`    - Integer number of ending vertex. Ending vertex must be placed on the edge of the graph.
 
 `-splitout`   - Name of the file the splited graph will be generated to
 
